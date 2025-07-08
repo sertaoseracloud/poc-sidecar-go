@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package auth;
+option go_package = "sidecar/proto";
+
+service AuthService {
+  rpc RequestAuth (AuthRequest) returns (AuthResponse);
+}
+
+message AuthRequest {
+  string provider = 1; // aws or azure
+}
+
+message AuthResponse {
+  string json = 1; // serialized credentials
+}

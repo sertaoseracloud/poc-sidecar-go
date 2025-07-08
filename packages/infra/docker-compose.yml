@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  sidecar-go:
+    build: ../sidecar-go
+    environment:
+      - RABBIT_URL=amqp://rabbitmq
+    depends_on:
+      - rabbitmq
+    ports:
+      - '3000:3000'
+      - '50051:50051'
+  auth-worker:
+    build: ../auth-worker
+    environment:
+      - RABBIT_URL=amqp://rabbitmq
+    depends_on:
+      - rabbitmq
+  mock-app:
+    build: ../mock-app
+    environment:
+      - PROVIDER=aws
+    depends_on:
+      - sidecar-go

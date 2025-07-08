@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-worker
+  template:
+    metadata:
+      labels:
+        app: auth-worker
+    spec:
+      containers:
+        - name: auth-worker
+          image: auth-worker:latest
+          env:
+            - name: RABBIT_URL
+              value: amqp://rabbitmq
